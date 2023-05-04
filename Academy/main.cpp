@@ -5,6 +5,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+#define delimetr "\n--------------------------------------------------------\n"
 #define HUMAN_TAKE_PARAMETRS const std::string& last_name, const std::string& first_name, unsigned int age
 #define HUMAN_GIVE_PARAMETRS last_name,first_name,age
 class Human
@@ -45,11 +46,11 @@ public:
 		set_age(age);
 		cout << "Constructor:\t" << this << endl;
 	}
-	~Human()
+	virtual ~Human()
 	{
 		cout << "HDectructor:\t" << this << endl; 
 	}
-	void info()const
+	virtual void info()const
 	{
 		cout << last_name << " " << first_name << " " << age << " y/o." << endl; 
 	}
@@ -189,13 +190,15 @@ public:
 		Student::info();
 		cout << "subject: " << subject << endl; 
 	}
-
 };
 
+//#define INHERITANCE
+#define POLYMORPHISM // многофоменность 
 void main()
 {
 	setlocale(LC_ALL, "");
 
+#ifdef INHERITANCE
 	Human human("Тупенко", "Василий", 18);
 	human.info();
 
@@ -208,4 +211,24 @@ void main()
 	Graduate grad("Bloom", "Orlando", 24, "Criminalistic", "OBN", 90, 80, "Сatch the criminal");
 	grad.info();
 
+#endif // INHERITANCE
+
+	Human* group[] =
+	{
+		new Student("Pincman","Jessie", 25,"Chemistry","WW_220", 95,98),
+		new Teacher("White","Walter",50,"Chemistry",20),
+		new Graduate("Schreder","Hank",40,"Criminalistic","OBN",90,70,"Сatch the criminal"),
+		new Student("Vercetti","Tomas",30,"Theft","Vice",98,100),
+		new Teacher("Diaz","Ricardo",50,"Weapons distribution",23)
+	};
+
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		group[i]->info();
+		cout << delimetr << endl; 
+	}
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i];
+	}
 }
