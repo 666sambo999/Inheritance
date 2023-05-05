@@ -188,7 +188,7 @@ public:
 		cout << "GDestructor:\t" << this << endl; 
 	}
 	
-	std:: ostream& info(std::ostream& os)const
+	std:: ostream& info(std::ostream& os)const override
 	{
 		return Student::info(os) << "subject: " << subject << endl; 
 	}
