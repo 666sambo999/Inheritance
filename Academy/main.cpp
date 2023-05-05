@@ -50,11 +50,16 @@ public:
 	{
 		cout << "HDectructor:\t" << this << endl; 
 	}
-	virtual void info()const
+	virtual std::ostream& info(std::ostream& os)const
 	{
-		cout << last_name << " " << first_name << " " << age << " y/o." << endl; 
+		return os << last_name << " " << first_name << " " << age << " y/o."; 
 	}
 };
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return obj.info(os);
+}
+
 #define STUDENT_TAKE_PARAMETRS const std::string& speciality, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETRS speciality,group, rating, attendance
 class Student:public Human
@@ -111,10 +116,9 @@ public:
 	{
 		cout << "SDestructor:\t" << this << endl; 
 	}
-	void info()const
+	std:: ostream& info(std::ostream& os)const override
 	{
-		Human::info();
-		cout << speciality << " " << group << " " << " rating:" << rating << ", attendance:" << attendance << endl;
+		return Human::info(os) << speciality << " " << group << " " << " rating:" << rating << ", attendance:" << attendance;
 	}
 };
 #define TEACHER_TAKE_PARAMETRS const std::string& speciality, unsigned int experience
@@ -155,10 +159,9 @@ public:
 		cout << "TDestructor:\t" << this << endl; 
 	}
 	// Ìועמהû 
-	void info()const
+	std::ostream& info(std::ostream& os)const override
 	{
-		Human::info();
-		cout << speciality << ", experience:" << experience << " years\n";
+		return Human::info(os) << speciality << ", experience:" << experience << " years\n";
 	}
 };
 
@@ -185,10 +188,9 @@ public:
 		cout << "GDestructor:\t" << this << endl; 
 	}
 	
-	void info()const
+	std:: ostream& info(std::ostream& os)const
 	{
-		Student::info();
-		cout << "subject: " << subject << endl; 
+		return Student::info(os) << "subject: " << subject << endl; 
 	}
 };
 
@@ -224,7 +226,8 @@ void main()
 
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
-		group[i]->info();
+		//group[i]->info();
+		cout << *group[i] << endl; 
 		cout << delimetr << endl; 
 	}
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
