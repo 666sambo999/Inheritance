@@ -1,5 +1,5 @@
 class Student	Pincman        Jessie    25  Chemistry           WW_220  95      98      
 class Teacher	White          Walter    50  Chemistry             20    
-class Graduate	Schreder       Hank      40  Criminalistic       OBN     90      70      Ñatch the criminal
+class Graduate	Schreder       Hank      40  Criminalistic       OBN     90      70      Catch the criminal
 class Student	Vercetti       Tomas     30  Theft               Vice    98      100     
 class Teacher	Diaz           Ricardo   50  Weapons distribution  23    
