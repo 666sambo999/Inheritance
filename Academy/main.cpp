@@ -424,15 +424,14 @@ void main()
 		new Student("Vercetti","Tomas",30,"Theft","Vice",98,100),
 		new Teacher("Diaz","Ricardo",50,"Weapons distribution",23)
 	};*/
-	
-	int n = 0;
-	Human** group = load("group.txt", n);
-	print(group, n);
 	//print(group, sizeof(group) / sizeof(group[0]));
 
 	//save(group, sizeof(group) / sizeof(group[0]), "group.txt");
 	
 		
 	//clear_memory(group, sizeof(group) / sizeof(group[0]));
+	int n = 0;
+	Human** group = load("group1.txt", n);
+	print(group, n);
 	clear_memory(group, n);
 }
