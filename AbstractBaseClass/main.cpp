@@ -39,7 +39,7 @@ class AirPlain : public AirTransport
 public:
 	void tace_off()
 	{
-		cout << "Для взлета нужен разгон, а для разгона нужна полоса" << endl;
+		cout << "Для взлета нужен разгон, а для разгона нужна взлетная полоса" << endl;
 	}
 	void land()
 	{
