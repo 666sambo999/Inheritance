@@ -24,7 +24,7 @@ namespace Geometry
 	enum Limitations
 	{
 		MIN_SIZE = 50,
-		MAX_SIZE = 550,
+		MAX_SIZE = 500,
 		MIN_START_X = 0,
 		MIN_START_Y = 0,
 		MAX_START_X = 1000,
@@ -62,7 +62,6 @@ namespace Geometry
 			if (line_width < Limitations::MIN_LINE_WIDTH)line_width = Limitations::MIN_LINE_WIDTH;
 			if (line_width > Limitations::MAX_LINE_WIDTH)line_width = Limitations::MAX_LINE_WIDTH;
 			this->line_width = line_width;
-			SHRT_MIN;
 		}
 		unsigned int get_start_x()const
 		{
@@ -200,7 +199,7 @@ namespace Geometry
 
 			//Выполняем рисование:
 			//::Rectangle(hdc, start_x, start_y, end_x, end_y);
-			::Rectangle(hdc, 300, 300, 600, 600);
+			::Rectangle(hdc, start_x, start_y, start_x+side1,start_y+side2);
 
 			DeleteObject(hBrush);
 			DeleteObject(hPen);
@@ -213,7 +212,7 @@ namespace Geometry
 			cout << "Сторона 2: " << side2 << endl;
 			Shape::info();
 		}
-		Rectangle(double side1, double side2, Color color):Shape(SHAPE_GIVE_PARAMETERS)
+		Rectangle(double side1, double side2, SHAPE_TAKE_PARAMETERS):Shape(SHAPE_GIVE_PARAMETERS)
 		{
 			set_side1(side1);
 			set_side2(side2);
@@ -223,7 +222,7 @@ namespace Geometry
 	class Square :public Rectangle
 	{
 	public:
-		Square(double side, Color color) :Rectangle(side, side, color) {}
+		Square(double side, SHAPE_TAKE_PARAMETERS) :Rectangle(side, side, SHAPE_GIVE_PARAMETERS) {}
 		~Square() {}
 	};
 	class Circle : public Shape
@@ -258,7 +257,7 @@ namespace Geometry
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 
-			::Ellipse(hdc, 300, 300, 400, 400);
+			::Ellipse(hdc, start_x, start_y, start_x+2*radius, start_y+2*radius);
 
 			DeleteObject(hBrush);
 			DeleteObject(hPen);
@@ -270,7 +269,7 @@ namespace Geometry
 			cout << "Radius: " << radius << endl; 
 			Shape::info();
 		}
-		Circle(double radius, Color color) :Shape(SHAPE_GIVE_PARAMETERS)
+		Circle(double radius, SHAPE_TAKE_PARAMETERS) :Shape(SHAPE_GIVE_PARAMETERS)
 		{
 			set_radius(radius);
 		}
@@ -280,6 +279,7 @@ namespace Geometry
 
 void main()
 {
+	
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD coord = {};
 	SetConsoleDisplayMode(hConsole, CONSOLE_FULLSCREEN_MODE, &coord);
@@ -290,12 +290,12 @@ void main()
 	cout << "Перимерт квадрата: " << squqre.get_perimetr() << endl;
 	squqre.draw();*/
 	
-	Geometry::Square square(5, Geometry::Color::console_red);
-	//square.info();
+	Geometry::Square square(50,100,400,25, Geometry::Color::red);
+	square.info();
 
-	Geometry::Rectangle rect(8,5, Geometry::Color::grey);
+	Geometry::Rectangle rect(80,50,300,400,5, Geometry::Color::green);
 	rect.info();
 
-	Geometry::Circle circle(5, Geometry::Color::yellow);
+	Geometry::Circle circle(50,500,400,5, Geometry::Color::yellow);
 	circle.info();
 }
