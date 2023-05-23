@@ -274,12 +274,150 @@ namespace Geometry
 			set_radius(radius);
 		}
 		~Circle(){}
-		};
+	};
+	
+	class Triangle : public Shape
+	{
+	public:
+		Triangle(SHAPE_TAKE_PARAMETERS) : Shape(SHAPE_GIVE_PARAMETERS){}
+		~Triangle(){}
+		virtual double get_height()const = 0; // виртуальный метод, не имеет определения, и значит определена в дочерныем классе
+
+		void info()const
+		{
+			cout << "Высота треугольника: " << get_height() << endl;
+			Shape::info();
+		}
+	};
+	class EquilateralTriangle :public Triangle
+	{
+		double side; 
+	public: 
+		EquilateralTriangle(double side, SHAPE_TAKE_PARAMETERS) : Triangle(SHAPE_GIVE_PARAMETERS)
+		{
+			set_side(side);
+		}
+		~EquilateralTriangle() {}
+		void set_side(double side)
+		{
+			if (side < Limitations::MIN_SIZE)side = Limitations::MIN_SIZE;
+			if (side > Limitations::MAX_SIZE)side = Limitations::MAX_SIZE;
+			this->side = side;
+		}
+		double get_size()const
+		{
+			return side;
+		}
+		double get_height()const
+		{
+			return sqrt(pow(side, 2) - pow(side / 2, 2));
+		}
+		double get_area()const
+		{
+			return side * get_height() / 2;
+		}
+		double get_perimeter()const
+		{
+			return side * 3;
+		}
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			POINT vertex [] =   // массив вершин, задаем три точки в консоле 
+			{
+				{start_x,start_y + side}, // vertex_1
+				{start_x + side,start_y}, // vertex_2
+				{start_x + side,start_y - get_height()} //vertex_3
+			};
+			::Polygon(hdc, vertex, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
+		void info()
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Длина стороны: " << endl; 
+			Triangle::info();
+		}
+	};
+
+	class RightTriangle :public Triangle
+	{
+		double side;
+	public:
+		RightTriangle(double side, SHAPE_TAKE_PARAMETERS) : Triangle(SHAPE_GIVE_PARAMETERS)
+		{
+			set_side(side);
+		}
+		~RightTriangle() {}
+		void set_side(double side)
+		{
+			if (side < Limitations::MIN_SIZE)side = Limitations::MIN_SIZE;
+			if (side > Limitations::MAX_SIZE)side = Limitations::MAX_SIZE;
+			this->side = side;
+		}
+		double get_size()const
+		{
+			return side;
+		}
+		double get_height()const
+		{
+			return pow(side, 2) + pow(side, 2);
+		}
+		double get_area()const
+		{
+			return side * side / 2;
+		}
+		double get_perimeter()const
+		{
+			return side * 3;
+		}
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			POINT vertex[] =   // массив вершин, задаем три точки в консоле 
+			{
+				{start_x,start_y+side}, // vertex_1
+				{start_x+side,start_y}, // vertex_2
+				{start_x,start_y+ side/2- get_height()} //vertex_3
+			};
+			::Polygon(hdc, vertex, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
+		void info()
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Длина стороны: " << endl;
+			Triangle::info();
+		}
+	};
 }
 
 void main()
 {
-	
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD coord = {};
 	SetConsoleDisplayMode(hConsole, CONSOLE_FULLSCREEN_MODE, &coord);
@@ -298,4 +436,11 @@ void main()
 
 	Geometry::Circle circle(50,500,400,5, Geometry::Color::yellow);
 	circle.info();
+
+	/*Geometry::EquilateralTriangle t_eq(200, 500, 100,25, Geometry::Color::blue);
+	t_eq.info();*/
+
+	Geometry::RightTriangle r_eq(100, 400, 200, 25, Geometry::Color::white);
+	r_eq.info();
+
 }
