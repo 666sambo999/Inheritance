@@ -304,7 +304,7 @@ namespace Geometry
 			if (side > Limitations::MAX_SIZE)side = Limitations::MAX_SIZE;
 			this->side = side;
 		}
-		double get_size()const
+		double get_side()const
 		{
 			return side;
 		}
@@ -354,34 +354,45 @@ namespace Geometry
 
 	class RightTriangle :public Triangle
 	{
-		double side;
+		double side1, side2;
 	public:
-		RightTriangle(double side, SHAPE_TAKE_PARAMETERS) : Triangle(SHAPE_GIVE_PARAMETERS)
+		RightTriangle(double side1, double side2, SHAPE_TAKE_PARAMETERS) : Triangle(SHAPE_GIVE_PARAMETERS)
 		{
-			set_side(side);
+			set_side1(side1);
+			set_side2(side2);
 		}
 		~RightTriangle() {}
-		void set_side(double side)
+		void set_side1(double side1)
 		{
-			if (side < Limitations::MIN_SIZE)side = Limitations::MIN_SIZE;
-			if (side > Limitations::MAX_SIZE)side = Limitations::MAX_SIZE;
-			this->side = side;
+			if (side1 < Limitations::MIN_SIZE)side1 = Limitations::MIN_SIZE;
+			if (side1 > Limitations::MAX_SIZE)side1 = Limitations::MAX_SIZE;
+			this->side1 = side1;
 		}
-		double get_size()const
+		void set_side2(double side2)
 		{
-			return side;
+			if (side2 < Limitations::MIN_SIZE)side2 = Limitations::MIN_SIZE;
+			if (side2 > Limitations::MAX_SIZE)side2 = Limitations::MAX_SIZE;
+			this->side2 = side2;
+		}
+		double get_side1()const
+		{
+			return side1;
+		}
+		double get_side2()const
+		{
+			return side2;
 		}
 		double get_height()const
 		{
-			return pow(side, 2) + pow(side, 2);
+			return sqrt(pow(side1, 2) - pow(side2 / 2, 2));
 		}
 		double get_area()const
 		{
-			return side * side / 2;
+			return side2 * get_height() / 2;
 		}
 		double get_perimeter()const
 		{
-			return side * 3;
+			return side1 * 2 + side2;
 		}
 		void draw()const
 		{
@@ -396,9 +407,9 @@ namespace Geometry
 
 			POINT vertex[] =   // массив вершин, задаем три точки в консоле 
 			{
-				{start_x,start_y+side}, // vertex_1
-				{start_x+side,start_y}, // vertex_2
-				{start_x,start_y+ side/2- get_height()} //vertex_3
+				{start_x,start_y+side1}, // vertex_1
+				{start_x+side2,start_y+side1}, // vertex_2
+				{start_x+side1/2,start_y + side2 - get_height()} //vertex_3
 			};
 			::Polygon(hdc, vertex, 3);
 
@@ -440,7 +451,7 @@ void main()
 	/*Geometry::EquilateralTriangle t_eq(200, 500, 100,25, Geometry::Color::blue);
 	t_eq.info();*/
 
-	Geometry::RightTriangle r_eq(100, 400, 200, 25, Geometry::Color::white);
+	Geometry::RightTriangle r_eq(200,100, 300, 100, 25, Geometry::Color::white);
 	r_eq.info();
 
 }
